@@ -18,12 +18,12 @@ readDir <- paste(extractDir, "/UCI HAR Dataset/", sep="")
 
 #read datacolumns and determine the ones we are interested in (std and mean)
 dataColumns <- read.table(paste(readDir, "features.txt", sep=""), header = FALSE)
-meanAndStdColumns <- grep("mean|std",dataColumns[,2])
+meanAndStdColumns <- grep("mean\\(\\)|std\\(\\)",dataColumns[,2])
 
 #create nice names
 meanAndStdColumns.Names <- as.character(dataColumns[,2][meanAndStdColumns])
-meanAndStdColumns.Names <- sub("-mean", "Mean", meanAndStdColumns.Names)
-meanAndStdColumns.Names <- sub("-std", "Std", meanAndStdColumns.Names)
+meanAndStdColumns.Names <- sub("-mean\\(\\)", "Mean", meanAndStdColumns.Names)
+meanAndStdColumns.Names <- sub("-std\\(\\)", "Std", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("\\(\\)", "", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("-", "", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("^t", "Time",meanAndStdColumns.Names)
@@ -39,12 +39,12 @@ activityLabel <- read.table(paste(readDir,"activity_labels.txt", sep=""))
 
 #read the labels for the training set and match them with names
 trainLabels <- read.table(paste(readDir,"train/y_train.txt", sep=""), header=FALSE)
-trainLabels <- merge(trainLabels, activityLabel, by.x = "V1", by.y="V1")
+trainLabels <- inner_join(trainLabels, activityLabel, by=c("V1","V1"))
 names(trainLabels) <- c("Id", "Activity")
 
 #read the labels for the test and match them with names
 testLabels <- read.table(paste(readDir,"test/y_test.txt", sep=""), header=FALSE)
-testLabels <- merge(testLabels, activityLabel, by.x = "V1", by.y="V1")
+testLabels <- inner_join(testLabels, activityLabel, by=c("V1","V1"))
 names(testLabels) <- c("Id", "Activity")
 
 #read the subject data
@@ -64,5 +64,7 @@ total <- rbind(train, test)
 
 #create summarized
 summarizedTotal <- total %>% group_by(Subject,Activity) %>% summarize_each(funs(mean))
-
+names(summarizedTotal) <- c(names(summarizedTotal)[1:2], paste("MeanOf", 
+                                    names(summarizedTotal[-(1:2)]), sep=""))
+                         
 write.table(summarizedTotal, "summary.txt", row.name=FALSE)
