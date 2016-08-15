@@ -25,8 +25,10 @@ meanAndStdColumns.Names <- as.character(dataColumns[,2][meanAndStdColumns])
 meanAndStdColumns.Names <- sub("-mean", "Mean", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("-std", "Std", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("\\(\\)", "", meanAndStdColumns.Names)
+meanAndStdColumns.Names <- sub("-", "", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("^t", "Time",meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("^f", "Frequency",meanAndStdColumns.Names)
+meanAndStdColumns.Names <- sub("Acc", "Acceleration",meanAndStdColumns.Names)
 
 #read the train and test set
 trainSet <- read.table(paste(readDir,"train/X_train.txt", sep=""), header=FALSE)[meanAndStdColumns]
@@ -57,5 +59,7 @@ names(test) <- c("Subject", "Activity", meanAndStdColumns.Names)
 #create a total
 total <- rbind(train, test)
 
+#create summarized
 summarizedTotal <- total %>% group_by(Subject,Activity) %>% summarize_each(funs(mean))
 
+write.table(summarizedTotal, "summary.txt", row.name=FALSE)
