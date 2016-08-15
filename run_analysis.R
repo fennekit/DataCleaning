@@ -34,14 +34,17 @@ meanAndStdColumns.Names <- sub("Acc", "Acceleration",meanAndStdColumns.Names)
 trainSet <- read.table(paste(readDir,"train/X_train.txt", sep=""), header=FALSE)[meanAndStdColumns]
 testSet <- read.table(paste(readDir,"test/X_test.txt", sep=""), header=FALSE)[meanAndStdColumns]
 
+#read activity labels
+activityLabel <- read.table(paste(readDir,"activity_labels.txt", sep=""))
+
 #read the labels for the training set and match them with names
 trainLabels <- read.table(paste(readDir,"train/y_train.txt", sep=""), header=FALSE)
-trainLabels <- merge(trainLabels, labels, by.x = "V1", by.y="V1")
+trainLabels <- merge(trainLabels, activityLabel, by.x = "V1", by.y="V1")
 names(trainLabels) <- c("Id", "Activity")
 
 #read the labels for the test and match them with names
 testLabels <- read.table(paste(readDir,"test/y_test.txt", sep=""), header=FALSE)
-testLabels <- merge(testLabels, labels, by.x = "V1", by.y="V1")
+testLabels <- merge(testLabels, activityLabel, by.x = "V1", by.y="V1")
 names(testLabels) <- c("Id", "Activity")
 
 #read the subject data
