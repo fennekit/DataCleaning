@@ -15,7 +15,7 @@ The script performs the following actions:
 8. All the columns related to train and test combined to result in two data sets (for train and test)
 9. Finally these two datasets are combined into one large dataset.
 10. From this combined dataset, for each activity, subject and variable the mean value is calculated
-11. This result is stored in the file **summary.txt**
+11. This result is stored in the file [summary.txt](https://github.com/fennekit/DataCleaning/blob/master/summary.txt)
 
-
+The [Code Book](https://github.com/fennekit/DataCleaning/blob/master/CodeBook.md) contains a decription of all the variables in the result
 
