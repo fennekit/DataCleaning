@@ -1,3 +1,5 @@
+library(dplyr)
+
 # ensure data dir exist
 if (!file.exists("data")) {
     dir.create("data")
@@ -52,6 +54,8 @@ names(train) <- c("Subject", "Activity", meanAndStdColumns.Names)
 test <- cbind(testSubject, testLabels$Activity, testSet)
 names(test) <- c("Subject", "Activity", meanAndStdColumns.Names)
 
-#create a total set
+#create a total
 total <- rbind(train, test)
+
+summarizedTotal <- total %>% group_by(Subject,Activity) %>% summarize_each(funs(mean))
 
