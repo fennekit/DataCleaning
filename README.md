@@ -1,9 +1,10 @@
 # README
 
 The file [run_analysis.R](https://github.com/fennekit/DataCleaning/blob/master/run_analysis.R) downloads the required data from the 
-[here](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip).
+[repository](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip).
 
 The script performs the following actions:
+
 1. The script stores the zip file in the *./data/* directory. If the directory does not exist the script creates the directory.
 2. Once the file is downloaded the zip-file is unzipped in the *./zipdata/* directory.
 3. From the file *features.txt* all the available columns are loaded and the columns containing **std()** or **mean()** are selected
