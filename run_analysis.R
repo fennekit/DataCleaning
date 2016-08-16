@@ -1,4 +1,5 @@
 library(dplyr)
+library(reshape2)
 
 # ensure data dir exist
 if (!file.exists("data")) {
@@ -26,9 +27,7 @@ meanAndStdColumns.Names <- sub("-mean\\(\\)", "Mean", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("-std\\(\\)", "Std", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("\\(\\)", "", meanAndStdColumns.Names)
 meanAndStdColumns.Names <- sub("-", "", meanAndStdColumns.Names)
-meanAndStdColumns.Names <- sub("^t", "Time",meanAndStdColumns.Names)
-meanAndStdColumns.Names <- sub("^f", "Frequency",meanAndStdColumns.Names)
-meanAndStdColumns.Names <- sub("Acc", "Acceleration",meanAndStdColumns.Names)
+meanAndStdColumns.Names <- sub("BodyBody", "Body", meanAndStdColumns.Names)
 
 #read the train and test set
 trainSet <- read.table(paste(readDir,"train/X_train.txt", sep=""), header=FALSE)[meanAndStdColumns]
@@ -64,7 +63,11 @@ total <- rbind(train, test)
 
 #create summarized
 summarizedTotal <- total %>% group_by(Subject,Activity) %>% summarize_each(funs(mean))
-names(summarizedTotal) <- c(names(summarizedTotal)[1:2], paste("MeanOf", 
-                                    names(summarizedTotal[-(1:2)]), sep=""))
+#names(summarizedTotal) <- c(names(summarizedTotal)[1:2], paste("MeanOf", 
+#                                    names(summarizedTotal[-(1:2)]), sep=""))
                          
 write.table(summarizedTotal, "summary.txt", row.name=FALSE)
+
+normalizedSummarizedTotal<-melt(summarizedTotal, c("Subject", "Activity"), 
+                                variable.name="VariableName", value.name = "Value")
+write.table(normalizedSummarizedTotal, "normalizedSummary.txt", row.name=FALSE)
