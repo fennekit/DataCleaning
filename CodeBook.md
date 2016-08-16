@@ -1,4 +1,9 @@
 # Code book 
+The original data consists 561 features. A detailed description of the data can be fouund in `features_info.txt` in
+the  dataset zip file.
+
+- [source](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) 
+- [description](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
 
 From the original data set the following feature description is taken:
 
